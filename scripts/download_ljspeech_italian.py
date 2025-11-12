@@ -22,7 +22,9 @@ def install_torchcodec():
         print("✅ torchcodec installato")
 
 def download_ljspeech_italian(output_dir="/content/drive/MyDrive/piper_training/dataset/ljspeech_italian",
-                              dataset_name="z-uo/female-LJSpeech-italian"):
+                              dataset_name="z-uo/female-LJSpeech-italian",
+                              max_samples=None,
+                              streaming=True):
     """
     Scarica e prepara dataset LJSpeech-Italian
 
@@ -31,9 +33,11 @@ def download_ljspeech_italian(output_dir="/content/drive/MyDrive/piper_training/
         dataset_name: Nome dataset Hugging Face
                      - z-uo/female-LJSpeech-italian (8h 23m, voce femminile)
                      - z-uo/male-LJSpeech-italian (31h 45m, voce maschile)
+        max_samples: Numero massimo di sample da processare (None = tutti)
+        streaming: Usa streaming mode per risparmiare memoria (default: True)
     """
     print("="*60)
-    print("  DOWNLOAD LJSPEECH-IT")
+    print("  DOWNLOAD LJSPEECH-IT" + (" - STREAMING MODE" if streaming else ""))
     print("="*60)
     print()
 
@@ -42,8 +46,15 @@ def download_ljspeech_italian(output_dir="/content/drive/MyDrive/piper_training/
 
     # Scarica dataset
     print(f"📥 Scaricamento dataset: {dataset_name}...")
-    dataset = load_dataset(dataset_name, split="train")
-    print(f"✅ Dataset caricato: {len(dataset)} campioni")
+    if streaming:
+        print("💡 Uso streaming mode per risparmiare memoria")
+
+    dataset = load_dataset(dataset_name, split="train", streaming=streaming)
+
+    if not streaming:
+        print(f"✅ Dataset caricato: {len(dataset)} campioni")
+    else:
+        print(f"✅ Dataset pronto (streaming mode)")
 
     # Crea directory
     wavs_dir = os.path.join(output_dir, "wavs")
@@ -54,22 +65,38 @@ def download_ljspeech_italian(output_dir="/content/drive/MyDrive/piper_training/
 
     # Prepara metadata
     metadata_lines = []
-    total = len(dataset)
+    processed = 0
 
-    for idx in tqdm(range(total), desc="Salvando audio"):
-        item = dataset[idx]
+    # Processa sample
+    import gc
+    for idx, item in enumerate(tqdm(dataset, desc="Salvando audio")):
+        try:
+            # Limita numero di sample se richiesto
+            if max_samples and idx >= max_samples:
+                print(f"\n⏸️  Limite raggiunto: {max_samples} sample processati")
+                break
 
-        # Salva audio
-        audio_filename = f"LJ_{idx:06d}.wav"
-        audio_path = os.path.join(wavs_dir, audio_filename)
+            # Salva audio
+            audio_filename = f"LJ_{idx:06d}.wav"
+            audio_path = os.path.join(wavs_dir, audio_filename)
 
-        # Estrai audio array e sample rate
-        audio_data = item['audio']
-        sf.write(audio_path, audio_data['array'], audio_data['sampling_rate'])
+            # Estrai audio array e sample rate
+            audio_data = item['audio']
+            sf.write(audio_path, audio_data['array'], audio_data['sampling_rate'])
 
-        # Aggiungi a metadata
-        text = item['text']
-        metadata_lines.append(f"{audio_filename}|{text}")
+            # Aggiungi a metadata
+            text = item['text']
+            metadata_lines.append(f"{audio_filename}|{text}")
+
+            processed += 1
+
+            # Libera memoria ogni 100 file
+            if streaming and processed % 100 == 0:
+                gc.collect()
+
+        except Exception as e:
+            print(f"\n⚠️  Errore sample {idx}: {e}")
+            continue
 
     # Salva metadata.csv
     metadata_path = os.path.join(output_dir, "metadata.csv")
@@ -77,9 +104,15 @@ def download_ljspeech_italian(output_dir="/content/drive/MyDrive/piper_training/
         f.write('\n'.join(metadata_lines))
 
     print(f"\n✅ Completato!")
-    print(f"   📊 {total} file audio salvati")
+    print(f"   📊 {processed} file audio salvati")
     print(f"   📄 metadata.csv creato")
-    print(f"   💾 Totale: ~{total * 0.5:.1f} MB")
+    print(f"   💾 Totale: ~{processed * 0.5:.1f} MB")
+
+    # Libera memoria finale
+    if streaming:
+        import gc
+        del dataset
+        gc.collect()
 
     return output_dir, metadata_path
 
@@ -98,7 +131,23 @@ if __name__ == "__main__":
         choices=["z-uo/female-LJSpeech-italian", "z-uo/male-LJSpeech-italian"],
         help="Dataset da scaricare: female (8h) o male (31h)"
     )
+    parser.add_argument(
+        "--max-samples",
+        type=int,
+        default=None,
+        help="Numero massimo di sample da processare (default: tutti)"
+    )
+    parser.add_argument(
+        "--no-streaming",
+        action="store_true",
+        help="Disabilita streaming mode (richiede più RAM)"
+    )
     args = parser.parse_args()
 
     # Esegui download
-    download_ljspeech_italian(args.output_dir, args.dataset)
+    download_ljspeech_italian(
+        output_dir=args.output_dir,
+        dataset_name=args.dataset,
+        max_samples=args.max_samples,
+        streaming=not args.no_streaming
+    )
