@@ -1,6 +1,6 @@
-# Modelli pre-trained (troppo grandi per GitHub)
-*/models/*
-!*/models/.gitkeep
+# Modelli pre-training (troppo grandi per GitHub)
+**/models/*
+!**/models/.gitkeep
 
 # Audio generati
 */audio_output/*.wav
