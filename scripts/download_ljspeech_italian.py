@@ -21,12 +21,16 @@ def install_torchcodec():
         subprocess.check_call([sys.executable, "-m", "pip", "install", "-q", "torchcodec"])
         print("✅ torchcodec installato")
 
-def download_ljspeech_italian(output_dir="/content/drive/MyDrive/piper_training/dataset/ljspeech_italian"):
+def download_ljspeech_italian(output_dir="/content/drive/MyDrive/piper_training/dataset/ljspeech_italian",
+                              dataset_name="z-uo/female-LJSpeech-italian"):
     """
     Scarica e prepara dataset LJSpeech-Italian
 
     Args:
         output_dir: Directory di output (default: Google Drive path per Colab)
+        dataset_name: Nome dataset Hugging Face
+                     - z-uo/female-LJSpeech-italian (8h 23m, voce femminile)
+                     - z-uo/male-LJSpeech-italian (31h 45m, voce maschile)
     """
     print("="*60)
     print("  DOWNLOAD LJSPEECH-IT")
@@ -37,8 +41,8 @@ def download_ljspeech_italian(output_dir="/content/drive/MyDrive/piper_training/
     install_torchcodec()
 
     # Scarica dataset
-    print("📥 Scaricamento dataset...")
-    dataset = load_dataset("sololabs/ljspeech-italian", split="train")
+    print(f"📥 Scaricamento dataset: {dataset_name}...")
+    dataset = load_dataset(dataset_name, split="train")
     print(f"✅ Dataset caricato: {len(dataset)} campioni")
 
     # Crea directory
@@ -64,7 +68,7 @@ def download_ljspeech_italian(output_dir="/content/drive/MyDrive/piper_training/
         sf.write(audio_path, audio_data['array'], audio_data['sampling_rate'])
 
         # Aggiungi a metadata
-        text = item['sentence']
+        text = item['text']
         metadata_lines.append(f"{audio_filename}|{text}")
 
     # Salva metadata.csv
@@ -88,7 +92,13 @@ if __name__ == "__main__":
         default="/content/drive/MyDrive/piper_training/dataset/ljspeech_italian",
         help="Directory di output"
     )
+    parser.add_argument(
+        "--dataset",
+        default="z-uo/female-LJSpeech-italian",
+        choices=["z-uo/female-LJSpeech-italian", "z-uo/male-LJSpeech-italian"],
+        help="Dataset da scaricare: female (8h) o male (31h)"
+    )
     args = parser.parse_args()
 
     # Esegui download
-    download_ljspeech_italian(args.output_dir)
+    download_ljspeech_italian(args.output_dir, args.dataset)
