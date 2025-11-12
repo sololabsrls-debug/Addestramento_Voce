@@ -1,0 +1,14 @@
+# Core dependencies per Addestramento Voce
+python-dotenv>=1.0.0
+datasets>=2.14.0
+soundfile>=0.12.1
+tqdm>=4.65.0
+torchcodec>=0.1.0
+
+# Training dependencies
+torch>=2.0.0
+torchaudio>=2.0.0
+transformers>=4.30.0
+
+# Optional: per Hugging Face Hub
+huggingface-hub>=0.16.0

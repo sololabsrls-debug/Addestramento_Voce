@@ -9,6 +9,10 @@ import sys
 from datasets import load_dataset
 from tqdm import tqdm
 import soundfile as sf
+from dotenv import load_dotenv
+
+# Carica variabili d'ambiente dal file .env
+load_dotenv()
 
 def install_torchcodec():
     """Installa torchcodec se mancante"""
@@ -44,12 +48,23 @@ def download_ljspeech_italian(output_dir="/content/drive/MyDrive/piper_training/
     # Installa torchcodec
     install_torchcodec()
 
+    # Ottieni token Hugging Face
+    hf_token = os.getenv("HF_TOKEN")
+    if not hf_token:
+        print("⚠️  ATTENZIONE: HF_TOKEN non trovato nel file .env")
+        print("   Alcuni dataset potrebbero richiedere autenticazione")
+
     # Scarica dataset
     print(f"📥 Scaricamento dataset: {dataset_name}...")
     if streaming:
         print("💡 Uso streaming mode per risparmiare memoria")
 
-    dataset = load_dataset(dataset_name, split="train", streaming=streaming)
+    dataset = load_dataset(
+        dataset_name,
+        split="train",
+        streaming=streaming,
+        token=hf_token
+    )
 
     if not streaming:
         print(f"✅ Dataset caricato: {len(dataset)} campioni")
