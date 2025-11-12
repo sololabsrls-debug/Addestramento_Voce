@@ -13,46 +13,53 @@ python3 generate.py # Genera audio di test
 
 L'audio generato sarà salvato come `output.wav` in ogni cartella.
 
-## 📋 Modelli Testati
+## 📋 Modelli Testati (Solo Licenze Commerciali MIT/Apache 2.0)
 
-### ⭐ Top 3 Consigliati
+### ⭐ Top 3 Consigliati per Uso Commerciale
 
-1. **07_Coqui_XTTS** - MPL 2.0 License
-   - ✓ Qualità eccellente, molto naturale
-   - ✓ Voice cloning zero-shot
-   - ✓ 17 lingue supportate
-   - ⚠️ Richiede GPU (RTF ~0.8-1.2)
-   - 📦 ~2 GB
-
-2. **01_Piper** - MIT License
+1. **01_Piper** - MIT License ✅
    - ✓ Velocissimo (RTF < 0.1)
    - ✓ Leggero (~20 MB)
    - ✓ Non richiede GPU
+   - ✓ Perfetto per assistenti telefonici real-time
    - ⚠️ Qualità buona ma non premium
 
-3. **05_Parler_TTS** - Apache 2.0
+2. **05_Parler_TTS** - Apache 2.0 ✅
    - ✓ Alta qualità
-   - ✓ Controllo espressivo
+   - ✓ Controllo espressivo tramite descrizioni
    - ✓ Multilingua
    - ⚠️ Latenza media (RTF ~0.5-1.0)
+   - ⚠️ Richiede GPU consigliata
+
+3. **04_Bark** - MIT License ✅
+   - ✓ Qualità eccellente ed espressiva
+   - ✓ Può generare emozioni ed effetti sonori
+   - ✓ Molto naturale
+   - ⚠️ Lento (RTF ~1.5-2.0)
+   - ⚠️ Richiede GPU consigliata
 
 ### Altri Modelli
 
-4. **04_Bark** - MIT License
-   - Emotivo e creativo, può generare effetti sonori
-   - Lento (RTF ~1.5-2.0) ma molto espressivo
-
-5. **03_OpenVoice_v2** - MIT License
-   - Specializzato in voice cloning/conversion
-   - Non genera audio da zero (richiede base audio)
-
-6. **02_Resemble_Chatterbox** - MIT License
+4. **02_Resemble_Chatterbox** - MIT License ✅
    - Buon bilanciamento qualità/velocità
+   - Modello 0.5B efficiente
    - Potrebbe richiedere accesso HuggingFace
 
-7. **06_Zonos** - Apache 2.0
+5. **03_OpenVoice_v2** - MIT License ✅
+   - Specializzato in voice cloning/conversion
+   - Non genera audio da zero (richiede base audio)
+   - Ottimo per tone color transfer
+
+6. **06_Zonos** - Apache 2.0 ✅
    - Modello emergente, dialog-oriented
    - Potrebbe non essere ancora pubblicamente disponibile
+
+### ⚠️ Modello NON per Uso Commerciale
+
+7. **07_Coqui_XTTS** - MPL 2.0 ❌
+   - ❌ Licenza MPL 2.0 con restrizioni commerciali
+   - Qualità eccellente ma NON adatto per uso commerciale libero
+   - Incluso solo per riferimento/test personale
 
 ## 📝 Testo di Test (30 secondi)
 
@@ -70,13 +77,13 @@ Grazie per l'ascolto, arrivederci!"
 
 ```
 TTS_Models_Test/
-├── 01_Piper/                  # Veloce e leggero
-├── 02_Resemble_Chatterbox/    # Bilanciamento qualità/velocità
-├── 03_OpenVoice_v2/           # Voice cloning
-├── 04_Bark/                   # Emotivo e creativo
-├── 05_Parler_TTS/             # Controllo espressivo
-├── 06_Zonos/                  # Dialog-oriented
-└── 07_Coqui_XTTS/             # ⭐ Top qualità
+├── 01_Piper/                  # ✅ MIT - Veloce e leggero
+├── 02_Resemble_Chatterbox/    # ✅ MIT - Bilanciamento qualità/velocità
+├── 03_OpenVoice_v2/           # ✅ MIT - Voice cloning
+├── 04_Bark/                   # ✅ MIT - Emotivo e creativo
+├── 05_Parler_TTS/             # ✅ Apache 2.0 - Controllo espressivo
+├── 06_Zonos/                  # ✅ Apache 2.0 - Dialog-oriented
+└── 07_Coqui_XTTS/             # ❌ MPL 2.0 - NON commerciale
 ```
 
 Ogni cartella contiene:
@@ -85,22 +92,26 @@ Ogni cartella contiene:
 - `output.wav` - Audio generato (verrà creato)
 - `README.md` - Note specifiche del modello
 
-## 🎯 Caso d'Uso Consigliato
+## 🎯 Caso d'Uso Consigliato (Solo Licenze Commerciali)
 
 ### Per Assistenti Telefonici (Real-Time)
-→ **Piper** - Velocità massima, latenza minima
+→ **Piper** - Velocità massima, latenza minima, non richiede GPU
 
 ### Per Contenuti di Alta Qualità
-→ **Coqui XTTS v2** - Miglior qualità complessiva
+→ **Bark** - Miglior qualità ed espressività (MIT License)
+→ **Parler-TTS** - Alta qualità con controllo espressivo (Apache 2.0)
 
-### Per Voice Cloning
-→ **Coqui XTTS v2** o **OpenVoice v2**
+### Per Voice Cloning/Conversion
+→ **OpenVoice v2** - Tone color transfer (MIT License)
 
 ### Per Contenuti Creativi/Narrativi
-→ **Bark** - Espressività ed emozioni
+→ **Bark** - Espressività, emozioni ed effetti sonori (MIT License)
 
 ### Per Controllo Stile Vocale
-→ **Parler-TTS** - Descrizioni testuali dello stile
+→ **Parler-TTS** - Descrizioni testuali dello stile (Apache 2.0)
+
+### Per Bilanciamento Qualità/Velocità
+→ **Resemble Chatterbox** - Modello 0.5B efficiente (MIT License)
 
 ## ⚙️ Requisiti
 
@@ -135,22 +146,44 @@ done
 
 Salva come `test_all.sh` e esegui con `chmod +x test_all.sh && ./test_all.sh`
 
-## 📊 Confronto Rapido
+## 📊 Confronto Rapido - Solo Licenze Commerciali
 
-| Modello | Licenza | Qualità | Velocità | GPU | Dimensione |
-|---------|---------|---------|----------|-----|------------|
-| Coqui XTTS | MPL 2.0 | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | Sì | 2 GB |
-| Piper | MIT | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ | No | 20 MB |
-| Parler-TTS | Apache 2.0 | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | Consigliata | 1 GB |
-| Bark | MIT | ⭐⭐⭐⭐⭐ | ⭐⭐ | Consigliata | 2 GB |
-| Chatterbox | MIT | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | Consigliata | 1 GB |
-| OpenVoice v2 | MIT | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | Consigliata | 300 MB |
+### ✅ Modelli con Licenza Commerciale Pura (MIT/Apache 2.0)
+
+| Modello | Licenza | Qualità | Velocità | GPU | Dimensione | Uso Commerciale |
+|---------|---------|---------|----------|-----|------------|-----------------|
+| **Piper** | MIT ✅ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ | No | 20 MB | ✅ Sì |
+| **Bark** | MIT ✅ | ⭐⭐⭐⭐⭐ | ⭐⭐ | Consigliata | 2 GB | ✅ Sì |
+| **Parler-TTS** | Apache 2.0 ✅ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | Consigliata | 1 GB | ✅ Sì |
+| **Chatterbox** | MIT ✅ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | Consigliata | 1 GB | ✅ Sì |
+| **OpenVoice v2** | MIT ✅ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | Consigliata | 300 MB | ✅ Sì |
+
+### ❌ Modello NON per Uso Commerciale
+
+| Modello | Licenza | Qualità | Velocità | GPU | Dimensione | Uso Commerciale |
+|---------|---------|---------|----------|-----|------------|-----------------|
+| Coqui XTTS | MPL 2.0 ❌ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | Sì | 2 GB | ❌ Limitato |
 
 ## 📚 Note Licenze
 
-Tutti i modelli qui testati hanno licenze compatibili con uso commerciale:
-- **MIT License**: Uso commerciale permesso, minime restrizioni
-- **Apache 2.0**: Uso commerciale permesso, richiede notice
-- **MPL 2.0**: Uso commerciale permesso, modifiche devono rimanere open-source
+### ✅ Licenze Consigliate per Uso Commerciale
+
+- **MIT License**: Uso commerciale completamente libero, minime restrizioni
+  - Modelli: Piper, Bark, OpenVoice v2, Resemble Chatterbox
+
+- **Apache 2.0**: Uso commerciale permesso, richiede attribution notice
+  - Modelli: Parler-TTS, Zonos
+
+### ⚠️ Licenze con Restrizioni
+
+- **MPL 2.0 (Mozilla Public License)**: Uso commerciale con restrizioni
+  - Modello: Coqui XTTS
+  - ❌ Modifiche al codice devono rimanere open-source
+  - ❌ Restrizioni per software proprietario
+  - **NON CONSIGLIATO per uso commerciale**
+
+### 🔍 Raccomandazione
+
+Per uso commerciale sicuro, usa **SOLO modelli MIT o Apache 2.0**.
 
 Verifica sempre i termini specifici di ogni modello prima dell'uso in produzione.
