@@ -1,204 +1,177 @@
-# 🎤 Addestramento Voce - TTS Training Project
+# 🎙️ Piper TTS - Fine-Tuning per Italiano
 
-Progetto completo per testing, training e deployment di modelli Text-to-Speech (TTS) in italiano per applicazioni commerciali (call center, assistenti virtuali, etc.).
-
-## ⚠️ IMPORTANTE - Google Colab + Python 3.12
-
-**Google Colab ha aggiornato a Python 3.12, ma TTS richiede Python ≤ 3.11**
-
-✅ **SOLUZIONE:** Vedi `Colab_FineTuning/SOLUZIONI_PYTHON312.md` per notebook aggiornati!
-
----
-
-## 📊 Modelli Testati
-
-| Modello | Qualità | RTF | Latenza | Uso Commerciale | Status |
-|---------|---------|-----|---------|-----------------|--------|
-| **Coqui XTTS v2** | 9/10 | 1.36 | ~2s | ✅ Sì (MIT) | ✅ Testato |
-| **Azzurra-voice** | 10/10 | 43.5 | ~30s | ❌ No (CC-BY-NC) | ✅ Scaricato |
-| **Resemble Chatterbox** | 8.5/10 | 0.8 | <1s | ✅ Sì | ⏳ Da testare |
-
-**RTF** = Real-Time Factor (1.0 = tempo reale, <1.0 = più veloce)
-
-## 📂 Struttura Progetto
-
-```
-Addestramento_Voce/
-├── Colab_FineTuning/                     🚀 TRAINING SU GOOGLE COLAB
-│   ├── SOLUZIONI_PYTHON312.md            ⚠️ LEGGI PRIMA (fix Python 3.12)
-│   ├── XTTS_Colab_Alternativa.ipynb      ⚡ Notebook veloce (5 min)
-│   ├── XTTS_Colab_Python311.ipynb        🐍 Notebook affidabile (10 min)
-│   ├── XTTS_FineTuning_Colab.ipynb       Notebook completo
-│   ├── XTTS_Test_Semplice.ipynb          Test semplificato
-│   ├── INDEX.md                          Guida navigazione
-│   ├── README.md                         Documentazione completa
-│   ├── QUICK_START.md                    Start rapido
-│   └── docs/NOTE_TECNICHE.md             Approfondimenti
-│
-├── CoquiXTTS/                            TEST LOCALE XTTS v2
-│   ├── scripts/
-│   │   ├── download_model.py
-│   │   └── test_quick.py                 ✅ Testato
-│   ├── audio_output/
-│   │   └── test_30sec.wav                ✅ Generato
-│   ├── voices/
-│   │   └── voce_riferimento_converted.wav
-│   └── config/
-│
-├── Azzurra/                              TEST LOCALE AZZURRA
-│   ├── scripts/
-│   │   ├── download_model.py             ✅ Completato
-│   │   └── test_quick.py
-│   ├── models/azzurra-voice/             ✅ Scaricato (13 file)
-│   └── audio_output/
-│
-├── voci_riferimento/                     CAMPIONI VOCE
-│   └── Addestramento_Voce.wav
-│
-└── testo_test_30sec.txt                  TESTO TEST
-```
+Progetto per il fine-tuning di modelli Piper TTS con voci italiane personalizzate.
 
 ## 🚀 Quick Start
 
-### **Opzione 1: Training su Google Colab** (RACCOMANDATO) ⚡
+### **Fine-Tuning su Google Colab** (Raccomandato)
 
-**Per fine-tuning o preprocessing dataset:**
+Il modo più semplice e veloce per fare fine-tuning di Piper:
 
-1. **Apri** `Colab_FineTuning/SOLUZIONI_PYTHON312.md`
-2. **Scegli** notebook:
-   - `XTTS_Colab_Alternativa.ipynb` (veloce, 5 min)
-   - `XTTS_Colab_Python311.ipynb` (affidabile, 10 min)
-3. **Upload** su https://colab.research.google.com/
-4. **Attiva** GPU: Runtime → Change runtime type → GPU
-5. **Esegui** celle in ordine
+1. **Apri il Notebook su Colab:**
+   - Carica `Piper_FineTuning_Colab.ipynb` su https://colab.research.google.com
 
-**Risultato:** Dataset preprocessato + modello XTTS funzionante
+2. **Attiva GPU:**
+   - Runtime → Change runtime type → GPU (T4)
 
----
+3. **Esegui il Training:**
+   - Segui le celle del notebook in ordine
+   - Il dataset verrà scaricato automaticamente
+   - Training: ~8-12 ore per fine-tuning
 
-### **Opzione 2: Voice Cloning Locale** (IMMEDIATO) 🎯
+4. **Download Modello:**
+   - Il modello finale sarà disponibile per il download
+   - Compatibile con Piper TTS
 
-**Per generare audio subito:**
+## 📊 Dataset
 
-```bash
-# Clone repository
-git clone https://github.com/sololabsrls-debug/Addestramento_Voce.git
-cd Addestramento_Voce
+Il notebook utilizza il dataset **LJSpeech-IT** (giacomoarienti/female-LJSpeech-italian):
+- **5,856 campioni audio**
+- **~10-11 ore** di parlato
+- **Voce femminile** italiana
+- **Qualità media-alta**
 
-# Installa dipendenze (Python 3.11!)
-pip install TTS==0.22.0 soundfile
+## 🎯 Modelli Piper
 
-# Test XTTS v2
-cd CoquiXTTS/scripts
-python test_quick.py
+Piper supporta diverse qualità di modelli:
+- **x_low**: Qualità bassa, veloce
+- **low**: Qualità medio-bassa
+- **medium**: Qualità media (consigliato)
+- **high**: Qualità alta (richiede più risorse)
+
+## 📁 Struttura Progetto
+
+```
+piper-tts-finetuning/
+├── Piper_FineTuning_Colab.ipynb    # Notebook training completo
+├── README.md                        # Questa guida
+└── requirements.txt                 # Dipendenze (opzionale, per uso locale)
 ```
 
-**Risultato:** Audio generato in ~1 minuto (RTF 1.36x)
+## 💻 Uso Locale (Opzionale)
 
----
+Se vuoi usare Piper localmente dopo il training:
 
-### **Opzione 3: Test Azzurra** (QUALITÀ MASSIMA) 🏆
+### Installazione
 
 ```bash
-cd Azzurra/scripts
+# Download Piper (Windows)
+wget https://github.com/rhasspy/piper/releases/latest/download/piper_windows_amd64.zip
+unzip piper_windows_amd64.zip
 
-# Download modello (solo prima volta, ~5 min)
-python download_model.py
-
-# Test generazione
-python test_quick.py
+# Linux/Mac
+wget https://github.com/rhasspy/piper/releases/latest/download/piper_amd64.tar.gz
+tar -xzf piper_amd64.tar.gz
 ```
 
-**Nota:** ⚠️ Solo uso non commerciale (CC-BY-NC)
+### Generazione Audio
 
-## Metriche Misurate
-
-- **Tempo di sintesi**: Tempo totale per generare audio
-- **RTF (Real-Time Factor)**: Rapporto tempo_sintesi/durata_audio
-  - RTF < 1.0 = Più veloce del tempo reale (ideale)
-  - RTF > 1.0 = Più lento del tempo reale
-- **Qualità**: Valutazione dal PDF di ricerca (scala 1-10)
-- **Dimensione file**: Dimensione output audio
-
-## Requisiti Sistema
-
-- Python 3.8+
-- GPU CUDA (opzionale ma raccomandato)
-- Spazio disco: ~5-10GB per i modelli
-- RAM: 8GB+ raccomandato
-
-## Note
-
-- **Azzurra-voice**: Migliore qualità per italiano
-- **Coqui XTTS v2**: Ottimo compromesso, multilingua
-- **Resemble Chatterbox**: Migliore per latenza bassa (chiamate real-time)
-
-## Riferimenti
-
-- Analisi completa: `Modelli TTS Locali per Chiamate in Italiano – Ricerca Completa.pdf`
-- Azzurra: https://huggingface.co/Azurro/Azzurra-voice
-- Coqui XTTS: https://github.com/coqui-ai/TTS
-- Resemble: https://github.com/resemble-ai
-
-## Troubleshooting
-
-### Errore CUDA/GPU
-Se non hai GPU, i modelli useranno CPU (più lento). È normale.
-
-### Modello non trovato
-Assicurati di aver eseguito `download_model.py` prima di `test_tts.py`
-
-### Dipendenze mancanti
 ```bash
-pip install -r requirements.txt
+# Con il tuo modello custom
+echo "Questo è un test" | ./piper/piper \
+  --model ./tuo_modello.onnx \
+  --output_file output.wav
 ```
 
-## 📄 Licenze
+## 🔧 Requisiti
 
-**Progetto:** MIT License (uso commerciale OK)
+### Per Colab (Consigliato):
+- Google account
+- GPU T4 (gratis su Colab)
+- ~10GB spazio Drive
 
-**Modelli:**
-- **XTTS v2:** MIT License ✅ Commerciale OK
-- **Azzurra-voice:** CC-BY-NC ⚠️ Solo non commerciale
-- **Resemble Chatterbox:** Apache 2.0 ✅ Commerciale OK
+### Per Training Locale:
+- Python 3.9-3.11
+- GPU NVIDIA con CUDA (24GB VRAM consigliati)
+- PyTorch
+- `piper_train` package
 
-**Dataset:**
-- **Common Voice:** CC0 (pubblico dominio) ✅ Commerciale OK
-- **M-AILABS:** Varie licenze, controllare singolarmente
+## 📖 Risorse
+
+- **Piper TTS**: https://github.com/rhasspy/piper
+- **Piper Training Docs**: https://github.com/rhasspy/piper/blob/master/TRAINING.md
+- **Dataset LJSpeech-IT**: https://huggingface.co/datasets/giacomoarienti/female-LJSpeech-italian
+- **Modelli Pre-addestrati**: https://huggingface.co/rhasspy/piper-voices
+
+## ⚙️ Parametri Training Consigliati
+
+```python
+# Fine-tuning (da modello esistente)
+MAX_EPOCHS = 1000
+BATCH_SIZE = 8  # Riduci se OOM
+QUALITY = "medium"
+SAMPLE_RATE = 22050
+
+# Training da zero (non consigliato senza dataset grande)
+MAX_EPOCHS = 2000
+DATASET_SIZE = "13,000+ campioni"
+```
+
+## 🎓 Processo Fine-Tuning
+
+1. **Preprocessing** (~10-30 min)
+   - Download dataset
+   - Conversione audio in formato corretto
+   - Generazione phonemi con espeak-ng
+
+2. **Training** (~8-12 ore per fine-tuning)
+   - Caricamento checkpoint base
+   - Training con GPU T4
+   - Salvataggio checkpoints ogni 100 epoch
+
+3. **Export** (~5 min)
+   - Conversione checkpoint → ONNX
+   - Generazione config.json
+   - Test audio
+
+4. **Download** (~2 min)
+   - Download modello.onnx
+   - Download modello.onnx.json
+   - Pronto per l'uso!
+
+## 📝 Note
+
+- **Colab Free**: Limite 12 ore → Usa checkpoints per riprendere
+- **Colab Pro** (€10/mese): 24 ore, GPU migliori
+- **Real-Time Factor**: Piper è molto veloce (~0.1 RTF = 10x real-time)
+- **Qualità**: Fine-tuning produce risultati migliori di training da zero con dataset piccoli
+
+## 🐛 Troubleshooting
+
+### Out of Memory su Colab
+```python
+# Riduci batch size nel notebook
+BATCH_SIZE = 4  # invece di 8
+```
+
+### Training troppo lento
+```python
+# Verifica GPU attiva
+import torch
+print(torch.cuda.is_available())  # Deve essere True
+```
+
+### Modello finale robotico
+- Aumenta epoch di training
+- Verifica qualità dataset (audio pulito?)
+- Prova fine-tuning invece di training da zero
+
+## 📄 Licenza
+
+Questo progetto: MIT License
+
+**Modelli e Dataset:**
+- Piper TTS: MIT License ✅ Commerciale OK
+- LJSpeech-IT: Apache 2.0 ✅ Commerciale OK
 
 ---
 
-## 🎉 Changelog
+## 🎉 Credits
 
-### v1.0 (2025-01-12)
-- ✅ Setup progetto iniziale
-- ✅ Test Coqui XTTS v2 con voice cloning
-- ✅ Download Azzurra-voice (13 file, ~5min)
-- ✅ Conversione campione voce (MP4 → WAV 22050Hz)
-- ✅ Generazione audio test 30 secondi
-- ✅ Notebook Google Colab (3 versioni)
-- ✅ Fix Python 3.12 compatibility
-- ✅ Documentazione completa (5 guide MD)
+- **Piper TTS**: https://github.com/rhasspy/piper (Rhasspy team)
+- **LJSpeech-IT Dataset**: giacomoarienti (Hugging Face)
+- **Training Framework**: PyTorch + Lightning
 
 ---
 
-## 🤝 Contributi
-
-Contributi benvenuti! Per modifiche:
-1. Fork repository
-2. Crea branch (`git checkout -b feature/nuova-funzione`)
-3. Commit (`git commit -m 'Aggiunta nuova funzione'`)
-4. Push (`git push origin feature/nuova-funzione`)
-5. Apri Pull Request
-
----
-
-## 📧 Contatti
-
-**Progetto:** SoloLabs SRL
-**Repository:** https://github.com/sololabsrls-debug/Addestramento_Voce
-**Issues:** https://github.com/sololabsrls-debug/Addestramento_Voce/issues
-
----
-
-**Buon training! 🚀**
+**Buon fine-tuning! 🚀**

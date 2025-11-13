@@ -1,7 +1,0 @@
-giacomoarienti/female-LJSpeech-italian
-None1145/Vulpisfoglia
-sarulab-speech/commonvoice22_sidon
-facebook/multilingual_librispeech
-ylacombe/cml-tts
-PHBJT/cml-tts-filtered
-WueNLP/sib-fleurs
