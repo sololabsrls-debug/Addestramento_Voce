@@ -33,12 +33,12 @@ python scripts/download_full_dataset.py
 
 Questo script scaricherà **TUTTI** i 5856 file del dataset.
 
-### Opzione 3: Usa lo script con parametri
+### Opzione 3: Usa lo script con parametri (CONSIGLIATO)
 
 ```bash
 cd /home/user/Addestramento_Voce
 
-# Scarica TUTTO (nessun limite)
+# Scarica TUTTO (nessun limite) con retry automatico e checkpoint
 python scripts/download_ljspeech_italian.py \
   --output-dir /content/ljspeech_italian \
   --dataset z-uo/female-LJSpeech-italian
@@ -48,7 +48,37 @@ python scripts/download_ljspeech_italian.py \
   --output-dir /content/ljspeech_italian \
   --dataset z-uo/female-LJSpeech-italian \
   --max-samples 100
+
+# Ricomincia da zero (ignora checkpoint)
+python scripts/download_ljspeech_italian.py \
+  --output-dir /content/ljspeech_italian \
+  --dataset z-uo/female-LJSpeech-italian \
+  --no-resume
 ```
+
+### 🆕 Nuove Funzionalità
+
+Lo script è stato migliorato con:
+
+1. **Retry Logic Automatico**
+   - Ritenta automaticamente in caso di errori di rete
+   - Backoff esponenziale: 2s, 4s, 8s, 16s, 32s
+   - Gestione intelligente dei rate limits
+
+2. **Checkpoint System**
+   - Salva progressi ogni 50 file
+   - Riprende automaticamente da dove si è interrotto
+   - Checkpoint salvato in `.checkpoint.json`
+
+3. **Rate Limit Handling**
+   - Pausa automatica quando Hugging Face applica rate limits
+   - Attesa crescente: 5s, 10s, 20s, 40s... fino a 300s
+   - Continua automaticamente dopo l'attesa
+
+4. **Monitoraggio RAM**
+   - Visualizza uso RAM ogni 50 file
+   - Garbage collection automatica ogni 100 file
+   - Ottimizzato per evitare Out of Memory
 
 ---
 
@@ -100,25 +130,55 @@ Oppure controlla il metadata:
 
 ## 🆘 Problemi Comuni
 
-### 1. Download si blocca dopo 100 file
-**Causa**: `MAX_SAMPLES = 100` impostato nello script
-**Soluzione**: Cambia in `MAX_SAMPLES = None`
+### 1. Rate Limit (429 Error)
+**Causa**: Troppe richieste a Hugging Face
+**Soluzione**: ✅ **Gestito automaticamente!**
+- Lo script pausa automaticamente
+- Riprende dopo attesa crescente (5s, 10s, 20s...)
+- Non serve fare nulla, aspetta
 
-### 2. Out of Memory
+### 2. Errore di rete / Connection Timeout
+**Causa**: Problemi di connessione temporanei
+**Soluzione**: ✅ **Gestito automaticamente!**
+- Retry automatico con backoff esponenziale
+- Fino a 5 tentativi per operazione
+- Checkpoint salva progressi ogni 50 file
+
+### 3. Download interrotto
+**Causa**: Crash, chiusura terminale, ecc.
+**Soluzione**: ✅ **Gestito automaticamente!**
+- Riesegui lo stesso comando
+- Lo script riprende dall'ultimo checkpoint
+- Non riscaricare file già salvati
+
+### 4. Download si blocca dopo 100 file
+**Causa**: `MAX_SAMPLES = 100` impostato nello script
+**Soluzione**: Cambia in `MAX_SAMPLES = None` o usa `--max-samples` senza valore
+
+### 5. Out of Memory
 **Causa**: RAM insufficiente
 **Soluzione**:
-- Riavvia runtime Colab
+- ✅ Monitoraggio RAM integrato (visualizzato ogni 50 file)
 - Verifica che streaming mode sia attivo (`streaming=True`)
+- Riavvia runtime Colab se necessario
 - Chiudi altre tab/applicazioni
 
-### 3. Errore HF_TOKEN
-**Causa**: Token Hugging Face mancante
+### 6. Errore HF_TOKEN
+**Causa**: Token Hugging Face mancante o non valido
 **Soluzione**:
 - Crea file `.env` con `HF_TOKEN=your_token`
 - Ottieni token da: https://huggingface.co/settings/tokens
+- Verifica che il token sia valido
 
-### 4. Spazio disco insufficiente
+### 7. Spazio disco insufficiente
 **Causa**: Google Drive pieno
 **Soluzione**:
 - Libera spazio su Drive
 - Cambia `output_dir` in directory locale `/content/ljspeech_italian`
+
+### 8. Troppi errori consecutivi
+**Causa**: Dataset corrotto o problemi persistenti
+**Soluzione**:
+- Verifica connessione internet stabile
+- Controlla logs per pattern di errore
+- Prova `--no-resume` per ricominciare da zero
