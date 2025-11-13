@@ -2,6 +2,14 @@
 **/models/*
 !**/models/.gitkeep
 
+# Piper TTS binaries e modelli (troppo grandi per GitHub)
+piper/*.exe
+piper/piper
+piper/*.dll
+piper/*.so
+piper/**/*.onnx
+piper/**/*.onnx.json
+
 # Audio generati
 */audio_output/*.wav
 !*/audio_output/.gitkeep
