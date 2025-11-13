@@ -2,6 +2,14 @@
 **/models/*
 !**/models/.gitkeep
 
+# Piper TTS binaries e modelli (troppo grandi per GitHub)
+piper/*.exe
+piper/piper
+piper/*.dll
+piper/*.so
+piper/**/*.onnx
+piper/**/*.onnx.json
+
 # Audio generati
 */audio_output/*.wav
 !*/audio_output/.gitkeep
@@ -51,8 +59,14 @@ desktop.ini
 # Temporary files
 *.tmp
 *.temp
+my_dataset/
+temp_test/*.wav
+temp_test/*.mp3
 
 # Environment variables (contiene secrets!)
 .env
 .env.local
 .env.*.local
+
+# Claude Code settings locali
+.claude/settings.local.json
