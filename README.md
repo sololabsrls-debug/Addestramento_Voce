@@ -1,27 +1,35 @@
-# 🎙️ Piper TTS - Fine-Tuning per Italiano
+# 🎙️ Piper TTS - Training & Fine-Tuning
 
-Progetto per il fine-tuning di modelli Piper TTS con voci italiane personalizzate.
+Progetto per training e fine-tuning di modelli Piper TTS con voci personalizzate.
 
 ## 🚀 Quick Start
 
-### **Fine-Tuning su Google Colab** (Raccomandato)
+Scegli il percorso più adatto a te:
 
-Il modo più semplice e veloce per fare fine-tuning di Piper:
+### **Percorso 1: Fine-Tuning Veloce** ⚡ (Raccomandato per iniziare)
 
-1. **Apri il Notebook su Colab:**
-   - Carica `Piper_FineTuning_Colab.ipynb` su https://colab.research.google.com
+Adatta un modello esistente con il tuo dataset (30+ minuti di audio).
 
-2. **Attiva GPU:**
-   - Runtime → Change runtime type → GPU (T4)
+1. **Apri:** `piper_training/Piper_FineTuning_Colab.ipynb`
+2. **Upload su Colab:** https://colab.research.google.com
+3. **Attiva GPU:** Runtime → Change runtime type → GPU (T4)
+4. **Esegui:** Run all
+5. **Tempo:** ~8-12 ore
 
-3. **Esegui il Training:**
-   - Segui le celle del notebook in ordine
-   - Il dataset verrà scaricato automaticamente
-   - Training: ~8-12 ore per fine-tuning
+### **Percorso 2: Training Completo** 🎯 (Per massima qualità)
 
-4. **Download Modello:**
-   - Il modello finale sarà disponibile per il download
-   - Compatibile con Piper TTS
+Addestra un modello da zero (2+ ore di audio consigliato).
+
+1. **Apri:** `piper_training/Piper_Training_Complete.ipynb`
+2. **Upload su Colab:** https://colab.research.google.com
+3. **Attiva GPU:** Runtime → Change runtime type → GPU (T4)
+4. **Esegui:** Run all
+5. **Tempo:** ~12-16 ore
+
+### **Guide Disponibili**
+
+- 📖 **Guida Completa:** `piper_training/PIPER_TRAINING_GUIDE.md` - Tutto quello che devi sapere
+- ⚡ **Quick Start:** `piper_training/PIPER_QUICK_START.md` - Inizia in 2 passi
 
 ## 📊 Dataset
 
@@ -42,10 +50,16 @@ Piper supporta diverse qualità di modelli:
 ## 📁 Struttura Progetto
 
 ```
-piper-tts-finetuning/
-├── Piper_FineTuning_Colab.ipynb    # Notebook training completo
-├── README.md                        # Questa guida
-└── requirements.txt                 # Dipendenze (opzionale, per uso locale)
+Addestramento_Voce/
+├── piper_training/                           # 📁 Tutto per il training
+│   ├── Piper_FineTuning_Colab.ipynb         # Fine-tuning veloce (8-12h)
+│   ├── Piper_Training_Complete.ipynb        # Training completo (12-16h)
+│   ├── PIPER_TRAINING_GUIDE.md              # Guida completa con troubleshooting
+│   └── PIPER_QUICK_START.md                 # Quick start 2-step
+├── piper/                                    # Binari Piper (generati)
+├── scripts/                                  # Script utility
+├── README.md                                 # Questa guida
+└── requirements.txt                          # Dipendenze Python
 ```
 
 ## 💻 Uso Locale (Opzionale)

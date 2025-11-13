@@ -1,0 +1,6 @@
+wavs/short.wav|Testo troppo corto
+wavs/long.wav|Questo file è molto lungo e supera i limiti consigliati
+wavs/wrong_sr.wav|File con sample rate sbagliato
+wavs/ok.wav|Questo file è corretto
+wavs/missing.wav|Questo file non esiste
+wavs/empty.wav|
