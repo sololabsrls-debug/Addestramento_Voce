@@ -51,8 +51,14 @@ desktop.ini
 # Temporary files
 *.tmp
 *.temp
+my_dataset/
+temp_test/*.wav
+temp_test/*.mp3
 
 # Environment variables (contiene secrets!)
 .env
 .env.local
 .env.*.local
+
+# Claude Code settings locali
+.claude/settings.local.json
