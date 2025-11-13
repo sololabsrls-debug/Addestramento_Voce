@@ -1,0 +1,6 @@
+Questo è un file di test per verificare il funzionamento del branch claude.
+
+Data: 2025-11-13
+Branch: claude/coqui-model-training-setup-011CV4HzBwhuuUaYs3dxowiC
+
+Test completato con successo!
