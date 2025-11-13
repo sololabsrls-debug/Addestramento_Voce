@@ -10,13 +10,35 @@ Guida alla risoluzione dei problemi comuni durante il download del dataset LJSpe
 ```
 std::bad_alloc
 terminate called after throwing an instance of 'std::bad_alloc'
+AsyncIOLoopKernelRestarter: restarting kernel (1/5)
 Si è verificato un arresto anomalo della sessione
 ```
 
 ### Causa:
-Il dataset viene caricato completamente in RAM e Google Colab Free (~12GB) non ha memoria sufficiente.
+Il dataset viene caricato completamente in RAM oppure il download esaurisce la memoria disponibile anche in streaming mode. Google Colab Free (~12GB RAM) può esaurire la memoria con dataset grandi.
 
-### ✅ SOLUZIONE 1: Usa Streaming Mode (RACCOMANDATO)
+### ✅ SOLUZIONE 1: Usa Memory-Safe Mode (RACCOMANDATO)
+
+**AGGIORNAMENTO 2025-11-13**: Il notebook `Piper_Dataset_Preparation.ipynb` è stato aggiornato con protezioni avanzate memoria:
+
+**Nuove funzionalità:**
+- Controllo automatico RAM ogni 10 file
+- Stop automatico se RAM < 2GB
+- Resume capability (riprende da dove si è fermato)
+- Batch size ridotto (50 invece di 100)
+- Pause tra i batch per liberare memoria
+- Statistiche RAM in tempo reale
+
+**Limitazione default per sicurezza:**
+Il notebook ora usa `MAX_SAMPLES = 1000` per default invece di scaricare tutto. Questo previene crash su Colab Free.
+
+Per scaricare l'intero dataset:
+1. Verifica di avere >8GB RAM disponibili
+2. Cambia `MAX_SAMPLES = None` nel notebook
+3. Monitora l'uso RAM durante il download
+4. Se si ferma, riesegui la cella: riprenderà automaticamente
+
+### ✅ SOLUZIONE 2: Usa Streaming Mode (Versione Base)
 
 **Cella corretta con streaming:**
 
@@ -117,18 +139,20 @@ del dataset
 gc.collect()
 ```
 
-### ✅ SOLUZIONE 2: Limita Sample per Test
+### ✅ SOLUZIONE 3: Limita Sample per Test
 
-Per test rapidi, usa `MAX_SAMPLES`:
+Il notebook aggiornato usa già `MAX_SAMPLES = 1000` per default. Per test più rapidi:
 
 ```python
 MAX_SAMPLES = 100   # Solo 100 sample (veloce, ~5-10 min)
 MAX_SAMPLES = 500   # 500 sample (medio, ~20-30 min)
-MAX_SAMPLES = 1000  # 1000 sample (lento, ~40-60 min)
-MAX_SAMPLES = None  # Tutti (completo, ~2-3 ore)
+MAX_SAMPLES = 1000  # 1000 sample (default, ~40-60 min)
+MAX_SAMPLES = None  # Tutti (completo, ~2-3 ore, usa con cautela)
 ```
 
-### ✅ SOLUZIONE 3: Riavvia Runtime
+**Nota**: Con il nuovo memory-safe mode, anche `MAX_SAMPLES = None` dovrebbe funzionare su Colab Free, ma si fermerà automaticamente se la RAM scende troppo.
+
+### ✅ SOLUZIONE 4: Riavvia Runtime
 
 Prima di eseguire il download:
 
@@ -139,7 +163,9 @@ Prima di eseguire il download:
    - Download dataset
 3. NON eseguire altre celle pesanti prima del download
 
-### ✅ SOLUZIONE 4: Verifica RAM Prima di Iniziare
+### ✅ SOLUZIONE 5: Verifica RAM Prima di Iniziare
+
+Il notebook aggiornato include già una cella di verifica RAM (cella 5). Eseguila prima del download:
 
 ```python
 import psutil
@@ -153,7 +179,9 @@ else:
     print("✅ RAM sufficiente")
 ```
 
-### ✅ SOLUZIONE 5: Scarica Localmente (NON su Colab)
+**Nuovo**: Il download si ferma automaticamente se RAM < 2GB durante l'esecuzione.
+
+### ✅ SOLUZIONE 6: Scarica Localmente (NON su Colab)
 
 Se hai un PC con più RAM:
 
