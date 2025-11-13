@@ -1,0 +1,10 @@
+wavs/audio_001.wav|Questo è un esempio di testo per il training.
+wavs/audio_002.wav|L'addestramento richiede file WAV in formato corretto.
+wavs/audio_003.wav|La qualità dell'audio è importante per i risultati.
+wavs/audio_004.wav|Ogni file deve avere la trascrizione corrispondente.
+wavs/audio_005.wav|Il dataset deve essere bilanciato e vario.
+wavs/audio_006.wav|Troppo corto
+wavs/audio_007.wav|Questo file è un po' più lungo del normale ma ancora accettabile.
+wavs/audio_008.wav|Un altro esempio di audio per il training della voce.
+wavs/audio_009.wav|I modelli TTS imparano dai dati di addestramento.
+wavs/audio_010.wav|Ricorda di verificare sempre il dataset prima di iniziare.
